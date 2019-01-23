@@ -1,6 +1,6 @@
 {
   "name": "issues-alert",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Alerts Issues From nodejs process",
   "main": "index.js",
   "scripts": {

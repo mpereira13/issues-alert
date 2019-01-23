@@ -1,0 +1,35 @@
+{
+    "autoStart": true,
+    "report": {
+        "listenning": true,
+        "outbound": {
+            "status": false,
+            "url": ""
+        },
+        "curl": {
+            "status": false,
+            "url": ""
+        },
+        "email": {
+            "status": false,
+            "to": "",
+            "cc": "",
+            "bcc": "",
+            "template": "",
+            "config": {
+                "host": "",
+                "port": "",
+                "secure": false,
+                "auth": {
+                    "user": "",
+                    "pass": ""
+                }
+            },
+            "_options": {}
+        },
+        "file": {
+            "status": false,
+            "localte": ""
+        }
+    }
+}

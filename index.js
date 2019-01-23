@@ -29,7 +29,8 @@ function start() {
                             error: error.stack,
                             filename: checkFile,
                             code: data,
-                            config: config.report.email.config
+                            config: config.report.email.config,
+                            emit: _config.me
                         }
                     )
                 }

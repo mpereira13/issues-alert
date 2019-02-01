@@ -7,34 +7,38 @@ var _config = { listenning: false };
 var processError = require('./lib/processError');
 var mail = require('./lib/mail');
 
+function _process(error) {
+    processError(error, function (data, checkFile) {
+        if (config.report.listenning) {
+            debug('Process Error Emit Evento Error');
+            _config.me.emit('error', data);
+        }
+        if (config.report.email.status) {
+            mail(
+                {
+                    file: config.report.email.template,
+                    to: config.report.email.to,
+                    cc: config.report.email.cc,
+                    bcc: config.report.email.bcc,
+                    title: 'ISSUES-ALERT [' + error.message + ']',
+                    error_title: error.message,
+                    error: error.stack,
+                    filename: checkFile,
+                    code: data,
+                    config: config.report.email.config,
+                    emit: _config.me
+                }
+            )
+        }
+    });
+}
+
 function start() {
     if (!_config.listenning) {
         _config.listenning = true;
         debug('Change Config Listenning to true');
         process.once('uncaughtException', function (error) {
-            processError(error, function (data, checkFile) {
-                if (config.report.listenning) {
-                    debug('Process Error Emit Evento Error');
-                    _config.me.emit('error', data);
-                }
-                if (config.report.email.status) {
-                    mail(
-                        {
-                            file: config.report.email.template,
-                            to: config.report.email.to,
-                            cc: config.report.email.cc,
-                            bcc: config.report.email.bcc,
-                            title: 'ISSUES-ALERT [' + error.message + ']',
-                            error_title: error.message,
-                            error: error.stack,
-                            filename: checkFile,
-                            code: data,
-                            config: config.report.email.config,
-                            emit: _config.me
-                        }
-                    )
-                }
-            });
+            _process(error);
         });
     } else {
         debugError('Listener is already started');
@@ -87,6 +91,10 @@ issues.prototype.stop = function () {
     _config.listenning = false;
     //process.removeListener('uncaughtException', () => { });
 }
+
+issues.prototype.log = function (error) {
+    _process(error);
+};
 
 module.exports = function (options) {
     return new issues(options);
